@@ -210,8 +210,8 @@
             }
         },
         mounted() {
-            // axios.get('./dist/data.json').then(response => (this.info = response.data));
-            axios.get('http://127.0.0.1:8080/crawler/getHotList').then(response => (this.info = response.data));
+            // axios.get('http://127.0.0.1:8080/crawler/getHotList').then(response => (this.info = response.data));
+            axios.get('https://zhi.re/crawler/getHotList').then(response => (this.info = response.data));
         },
         methods: {
             showTime: function showTime(hotDate) {
