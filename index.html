@@ -92,15 +92,15 @@
     <div class="page-wrapper">
         <div class="container-xl">
             <!-- Page title -->
-            <div class="page-header d-print-none">
-                <div class="row g-2 align-items-center">
-                    <div class="col">
-                        <h2 class="page-title">
-                            <!--									 Activity-->
-                        </h2>
-                    </div>
-                </div>
-            </div>
+            <!--            <div class="page-header d-print-none">-->
+            <!--                <div class="row g-2 align-items-center">-->
+            <!--                    <div class="col">-->
+            <!--                        <h2 class="page-title">-->
+            <!--                             Activity-->
+            <!--                        </h2>-->
+            <!--                    </div>-->
+            <!--                </div>-->
+            <!--            </div>-->
         </div>
         <div class="page-body">
             <div class="container-xl">
@@ -123,11 +123,15 @@
                                                     <a :href="item.url" target="_blank"> {{item.hotText}}</a>
                                                 </div>
                                                 <div class="text-muted">
-                                                    <img src="https://www.weibo.com/favicon.ico"
+                                                    <img :src="showSourceUrl(item.source)"
                                                          style="width: 14px; height: 14px;">
-                                                    微博 • {{showTime(item.hotDate)}}
-                                                    <el-tag size="mini"> {{item.hotCount}}</el-tag>
-                                                    <el-tag v-if="item.hotExtra!==''" type="danger" effect="dark"
+                                                    {{showSource(item.source)}} • {{showTime(item.hotDate)}}
+
+                                                    <el-tag v-if="item.hotCount!==null && item.hotCount!==''"
+                                                            size="mini"> {{item.hotCount}}
+                                                    </el-tag>
+                                                    <el-tag v-if="item.hotExtra!==null && item.hotExtra!==''"
+                                                            type="danger" effect="dark"
                                                             size="mini">
                                                         {{item.hotExtra}}
                                                     </el-tag>
@@ -196,7 +200,8 @@
                                 "hotText": null,
                                 "hotCount": null,
                                 "hotDate": null,
-                                "url": null
+                                "url": null,
+                                "source": null,
                             }
                         ],
                         codeNum: null,
@@ -212,7 +217,21 @@
             showTime: function showTime(hotDate) {
                 if (hotDate === null) return;
                 return getTimer(hotDate + ":00");
-            }
+            },
+            showSource: function showSource(source) {
+                let sourceDesc = "";
+                if (source === 1) sourceDesc = "微博";
+                else if (source === 2) sourceDesc = "百度";
+                else if (source === 3) sourceDesc = "头条";
+                return sourceDesc;
+            },
+            showSourceUrl: function showSourceUrl(source) {
+                let sourceDesc = "";
+                if (source === 1) sourceDesc = "https://www.weibo.com/favicon.ico";
+                else if (source === 2) sourceDesc = "https://www.baidu.com/favicon.ico";
+                else if (source === 3) sourceDesc = "https://www.toutiao.com/favicon.ico";
+                return sourceDesc;
+            },
         }
     });
 
