@@ -18,13 +18,31 @@
     <!-- 引入样式 -->
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <style>
+        /* 设置了浏览器宽度不大于700px时  显示80宽度 */
         @media screen and (max-width: 700px) {
             .col-8 {
                 width: 87%
             }
         }
-
-        /* 设置了浏览器宽度不大于700px时  显示80宽度 */
+    </style>
+    <style>
+        #myBtn {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 30px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: dodgerblue;
+            color: white;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        #myBtn:hover {
+            background-color: #555;
+        }
     </style>
     <!-- 引入组件库 -->
     <script src="https://unpkg.com/element-ui/lib/index.js"></script>
@@ -168,6 +186,17 @@
             <div class="container-xl">
                 <div class="row text-center align-items-center flex-row-reverse">
                     <div class="col-lg-auto ms-lg-auto">
+
+                        <button onclick="topFunction()" id="myBtn" title="回顶部">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevrons-up"
+                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                 fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                <polyline points="7 11 12 6 17 11"></polyline>
+                                <polyline points="7 17 12 12 17 17"></polyline>
+                            </svg>
+                        </button>
+
                         <ul class="list-inline list-inline-dots mb-0">
                             <li class="list-inline-item">
                                 <a href="https://github.com/zhi-re" target="_blank" class="link-secondary"
@@ -254,7 +283,7 @@
         var week = day * 7;
         var month = day * 30;
         var time1 = new Date().getTime();//当前的时间戳
-        var time2 = Date.parse(new Date(stringTime));//指定时间的时间戳
+        var time2 = Date.parse(stringTime.replace(/-/g, "/"));//指定时间的时间戳
         var time = time1 - time2;
         var result = "刚刚";
         if (time / month >= 1) {
@@ -269,6 +298,25 @@
             result = parseInt(time / minute) + "分钟前";
         }
         return result;
+    }
+
+    // 当网页向下滑动 20px 出现"返回顶部" 按钮
+    window.onscroll = function () {
+        scrollFunction()
+    };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+            document.getElementById("myBtn").style.display = "block";
+        } else {
+            document.getElementById("myBtn").style.display = "none";
+        }
+    }
+
+    // 点击按钮，返回顶部
+    function topFunction() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
     }
 </script>
 
