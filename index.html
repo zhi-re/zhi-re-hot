@@ -21,9 +21,16 @@
         /* 设置了浏览器宽度不大于700px时  显示80宽度 */
         @media screen and (max-width: 700px) {
             .col-8 {
-                width: 87%
+                width: 100%
             }
         }
+
+        @media screen and (min-width: 700px) {
+            .col-8 {
+                width: 70%
+            }
+        }
+
     </style>
     <style>
         #myBtn {
@@ -40,6 +47,7 @@
             padding: 5px;
             border-radius: 5px;
         }
+
         #myBtn:hover {
             background-color: #555;
         }
@@ -132,9 +140,12 @@
             <!--                </div>-->
             <!--            </div>-->
         </div>
+
         <div class="page-body">
             <div class="container-xl">
-                <div class="row justify-content-center">
+                <!-- 居中样式-->
+                <!-- <div class="row justify-content-center">-->
+                <div class="row">
                     <div class="col-8">
                         <div class="card">
                             <div class="card-body">
@@ -179,6 +190,23 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-sm-6 col-lg-3">
+
+                        <h3 class="card-title">今日热议主题</h3>
+                        <div class="dropdown-menu dropdown-menu-demo">
+                            <div v-for="(item, index) in showTopData(info.data)">
+                                <a :href="item.url" class="dropdown-item" target="_blank">
+                                    <img :src="showSourceUrl(item.source)"
+                                         style="width: 18px; height: 18px;">
+                                    &nbsp;{{item.hotText}}</a>
+                                <div class="dropdown-divider"></div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -188,8 +216,10 @@
                     <div class="col-lg-auto ms-lg-auto">
 
                         <button onclick="topFunction()" id="myBtn" title="回顶部">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevrons-up"
-                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="icon icon-tabler icon-tabler-chevrons-up"
+                                 width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                                 stroke="currentColor"
                                  fill="none" stroke-linecap="round" stroke-linejoin="round">
                                 <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                 <polyline points="7 11 12 6 17 11"></polyline>
@@ -273,8 +303,51 @@
                 else if (source === 3) sourceDesc = "https://www.toutiao.com/favicon.ico";
                 return sourceDesc;
             },
+            showTopData: function showTopData(data) {
+                let hasData = data.filter(item => item.hotCount !== null && item.hotCount !== '')
+                let wbData = hasData.filter(item => item.source === 1)
+                let ttData = hasData.filter(item => item.source === 3)
+                let bdData = data.filter(item => item.source === 2)
+
+                wbData.sort(function (a, b) {
+                    return b.hotCount - a.hotCount
+                })
+
+                ttData.sort(function (a, b) {
+                    return b.hotCount - a.hotCount
+                })
+
+                wbData = wbData.slice(0, 5);
+                bdData = bdData.slice(0, 5);
+                ttData = ttData.slice(0, 5);
+                hasData = wbData.concat(bdData).concat(ttData);
+                // data.forEach(function (value, index, array) {
+                //     console.log(value)
+                // })
+                return shuffle(hasData);
+            }
         }
     });
+
+
+    /**
+     * 打乱数组顺序
+     *
+     * @param arr
+     * @returns {*}
+     */
+    function shuffle(arr) {
+        var l = arr.length
+        var index, temp
+        while (l > 0) {
+            index = Math.floor(Math.random() * l)
+            temp = arr[l - 1]
+            arr[l - 1] = arr[index]
+            arr[index] = temp
+            l--
+        }
+        return arr
+    }
 
     function getTimer(stringTime) {
         var minute = 1000 * 60;
